@@ -7,8 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB0552A318E0172200845535 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB0552A118E0172200845535 /* Mutex.cpp */; };
 		CB40A35618DA7BB200F76B28 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB40A35518DA7BB200F76B28 /* main.cpp */; };
 		CB40A35818DA7BB200F76B28 /* MessageLoop.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = CB40A35718DA7BB200F76B28 /* MessageLoop.1 */; };
+		CB40A36318DA7C4200F76B28 /* Looper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB40A36118DA7C4200F76B28 /* Looper.cpp */; };
+		CB40A36618DA7D1500F76B28 /* Queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB40A36418DA7D1500F76B28 /* Queue.cpp */; };
+		CB40A36918DA814B00F76B28 /* Message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB40A36718DA814B00F76B28 /* Message.cpp */; };
+		CB40A36C18DA835800F76B28 /* Handler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB40A36A18DA835800F76B28 /* Handler.cpp */; };
+		CB40A36F18DA8C3C00F76B28 /* Notifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB40A36D18DA8C3C00F76B28 /* Notifier.cpp */; };
+		CB40A37218DA95E900F76B28 /* SocketNotifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB40A37018DA95E900F76B28 /* SocketNotifier.cpp */; };
+		CB48A5AD18DAC43800EEF356 /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB48A5AB18DAC43800EEF356 /* Socket.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,9 +33,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB0552A118E0172200845535 /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mutex.cpp; sourceTree = "<group>"; };
+		CB0552A218E0172200845535 /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
 		CB40A35218DA7BB200F76B28 /* MessageLoop */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MessageLoop; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB40A35518DA7BB200F76B28 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		CB40A35718DA7BB200F76B28 /* MessageLoop.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = MessageLoop.1; sourceTree = "<group>"; };
+		CB40A36118DA7C4200F76B28 /* Looper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Looper.cpp; path = MessageLoop/Looper.cpp; sourceTree = "<group>"; };
+		CB40A36218DA7C4200F76B28 /* Looper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Looper.h; path = MessageLoop/Looper.h; sourceTree = "<group>"; };
+		CB40A36418DA7D1500F76B28 /* Queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Queue.cpp; sourceTree = "<group>"; };
+		CB40A36518DA7D1500F76B28 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
+		CB40A36718DA814B00F76B28 /* Message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Message.cpp; path = MessageLoop/Message.cpp; sourceTree = "<group>"; };
+		CB40A36818DA814B00F76B28 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Message.h; path = MessageLoop/Message.h; sourceTree = "<group>"; };
+		CB40A36A18DA835800F76B28 /* Handler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Handler.cpp; path = MessageLoop/Handler.cpp; sourceTree = "<group>"; };
+		CB40A36B18DA835800F76B28 /* Handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Handler.h; path = MessageLoop/Handler.h; sourceTree = "<group>"; };
+		CB40A36D18DA8C3C00F76B28 /* Notifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Notifier.cpp; sourceTree = "<group>"; };
+		CB40A36E18DA8C3C00F76B28 /* Notifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifier.h; sourceTree = "<group>"; };
+		CB40A37018DA95E900F76B28 /* SocketNotifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketNotifier.cpp; sourceTree = "<group>"; };
+		CB40A37118DA95E900F76B28 /* SocketNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketNotifier.h; sourceTree = "<group>"; };
+		CB48A5AB18DAC43800EEF356 /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
+		CB48A5AC18DAC43800EEF356 /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +68,22 @@
 		CB40A34918DA7BB200F76B28 = {
 			isa = PBXGroup;
 			children = (
+				CB40A36118DA7C4200F76B28 /* Looper.cpp */,
+				CB40A36218DA7C4200F76B28 /* Looper.h */,
+				CB40A36418DA7D1500F76B28 /* Queue.cpp */,
+				CB40A36518DA7D1500F76B28 /* Queue.h */,
+				CB40A36D18DA8C3C00F76B28 /* Notifier.cpp */,
+				CB40A36E18DA8C3C00F76B28 /* Notifier.h */,
+				CB40A37018DA95E900F76B28 /* SocketNotifier.cpp */,
+				CB40A37118DA95E900F76B28 /* SocketNotifier.h */,
+				CB48A5AB18DAC43800EEF356 /* Socket.cpp */,
+				CB48A5AC18DAC43800EEF356 /* Socket.h */,
+				CB40A36718DA814B00F76B28 /* Message.cpp */,
+				CB40A36818DA814B00F76B28 /* Message.h */,
+				CB40A36A18DA835800F76B28 /* Handler.cpp */,
+				CB40A36B18DA835800F76B28 /* Handler.h */,
+				CB0552A118E0172200845535 /* Mutex.cpp */,
+				CB0552A218E0172200845535 /* Mutex.h */,
 				CB40A35418DA7BB200F76B28 /* MessageLoop */,
 				CB40A35318DA7BB200F76B28 /* Products */,
 			);
@@ -117,7 +157,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB0552A318E0172200845535 /* Mutex.cpp in Sources */,
+				CB40A36618DA7D1500F76B28 /* Queue.cpp in Sources */,
+				CB40A36918DA814B00F76B28 /* Message.cpp in Sources */,
+				CB40A37218DA95E900F76B28 /* SocketNotifier.cpp in Sources */,
+				CB40A36318DA7C4200F76B28 /* Looper.cpp in Sources */,
+				CB48A5AD18DAC43800EEF356 /* Socket.cpp in Sources */,
+				CB40A36F18DA8C3C00F76B28 /* Notifier.cpp in Sources */,
 				CB40A35618DA7BB200F76B28 /* main.cpp in Sources */,
+				CB40A36C18DA835800F76B28 /* Handler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +245,7 @@
 		CB40A35C18DA7BB200F76B28 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -204,6 +253,7 @@
 		CB40A35D18DA7BB200F76B28 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -227,6 +277,7 @@
 				CB40A35D18DA7BB200F76B28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
