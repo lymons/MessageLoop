@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Messageloop : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Messageloop</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/lymons/MessageLoop">View on GitHub</a>
+
+          <h1 id="project_title">Messageloop</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/lymons/MessageLoop/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/lymons/MessageLoop/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="messageloop" class="anchor" href="#messageloop"><span class="octicon octicon-link"></span></a>MessageLoop</h1>
+
+<h3>
+<a name="%E5%8A%9F%E8%83%BD%E8%A6%81%E6%B1%82" class="anchor" href="#%E5%8A%9F%E8%83%BD%E8%A6%81%E6%B1%82"><span class="octicon octicon-link"></span></a>功能要求</h3>
+
+<ul>
+<li>1. 用于多线程间进行单向的消息传递，可以做到有多个发送线程向一个接收线程发送消息。</li>
+<li>2. 该模块能让消息的接收者，发送者（线程）能够简单方便地使用</li>
+<li>3. 接收者能够及时地收到消息，并立即对该消息做出反应（不需要把反应结果告诉发送者）</li>
+<li>4. 该模块不能过多地占用cpu资源</li>
+<li>5. 该模块能在Win，Unix/Linux平台下编译使用</li>
+<li>6. 线程安全</li>
+<li>7. 接收线程里可以有多个接收者</li>
+</ul><h3>
+<a name="%E6%B6%88%E6%81%AF%E7%9A%84%E5%86%85%E5%AE%B9%E5%BA%94%E8%AF%A5%E6%9C%89%E5%A6%82%E4%B8%8B%E7%9A%84%E9%A1%B9%E7%9B%AE" class="anchor" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E5%86%85%E5%AE%B9%E5%BA%94%E8%AF%A5%E6%9C%89%E5%A6%82%E4%B8%8B%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="octicon octicon-link"></span></a>消息的内容应该有如下的项目</h3>
+
+<ul>
+<li>1. 消息识别码，它是一种接收者和发送者都共识的代码，发送者通过这个代码可以让接收者明白它的意图</li>
+<li>2. 欲发送的消息，包含下面两种消息：</li>
+<li>    2.1 字符串</li>
+<li>    2.2 自定义的数据结构 基本上接收者通过该消息的识别码可以明白该数据结构的数据类型</li>
+</ul><h3>
+<a name="%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86" class="anchor" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="octicon octicon-link"></span></a>实现原理</h3>
+
+<p>使用socket和I/O多路复用select来实现，因为socket是跨平台，且在等待消息的时候不占用cpu资源</p>
+
+<ul>
+<li>1.用select的fdset来模拟一个消息队列</li>
+<li>2.接收者创建一个服务端socket</li>
+<li>3.把连接到这个服务端socket的发送端socket放入到fdset中</li>
+<li>4.接收者可以使用select来监控这个fdset</li>
+<li>5.fdset中一旦有可读项，则找出对应的发送端socket</li>
+<li>6.根据这个发送端的socket中找到相对应的Message</li>
+<li>7.让接收者处理这个Message。</li>
+</ul><h3>
+<a name="%E5%9F%BA%E4%BA%8E%E4%B8%8A%E8%BF%B0%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%AF%E4%BB%A5%E6%8A%BD%E5%87%BA%E5%A6%82%E4%B8%8B%E7%9A%84class" class="anchor" href="#%E5%9F%BA%E4%BA%8E%E4%B8%8A%E8%BF%B0%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%AF%E4%BB%A5%E6%8A%BD%E5%87%BA%E5%A6%82%E4%B8%8B%E7%9A%84class"><span class="octicon octicon-link"></span></a>基于上述的原理，可以抽出如下的class：</h3>
+
+<ul>
+<li>1. 接收者类 Handler
+因为在接收线程里可以有多个接收者，所以必须把接收者定义成一个类，
+该类的功能就是对收到的消息进行反应</li>
+<li>2. 消息类 Message
+存储消息内容，并把消息发送给消息循环类</li>
+<li>3. 消息循环类 Looper
+监听消息队列，一旦有消息来临时，就找到该消息的发送目标（Handler），然后送给他。
+并把该消息从消息队列中删除掉。</li>
+<li>4. 消息队列类
+就是存放所有未处理消息的队列</li>
+</ul><p>上面内容参照了Android的Handler+Looper的机制</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Messageloop maintained by <a href="https://github.com/lymons">lymons</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
