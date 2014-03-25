@@ -22,7 +22,9 @@ protected:
             return false;
         }
         
-        printf("type: %d, message: %s\n", m.type, m.message.c_str());
+        printf("type: %d, message: %s\n", m.what, m.message.c_str());
+        
+        sleep(5);
         
         return true;
     }
@@ -36,7 +38,7 @@ void* testThread1(void* ptr)
     h->CallMe();
     for (int i = 0; i < 1000; ++ i) {
         Message* msg = h->ObtainEmptyMessage();
-        msg->type = 0x101;
+        msg->what = 0x101;
         msg->message = "hello ";
         char buf[10] = {0};
         sprintf(buf, "%i", i);

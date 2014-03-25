@@ -29,7 +29,7 @@ public:
     bool IsObtainExpired();
     
 public:
-    int type;
+    int what;
     string message;
     
 private:
