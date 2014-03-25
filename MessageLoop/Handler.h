@@ -26,10 +26,28 @@ using namespace std;
 class Message;
 class Looper;
 
+class ActionListener
+{
+public:
+    typedef std::function<void(Message&)> ActionCallback;
+    
+public:
+    ActionListener(ActionCallback cb) :_callback(cb) {
+    }
+    
+    void fire(Message& e) {
+        _callback(e);
+    }
+    
+private:
+    ActionCallback _callback;
+};
+
 class Handler
 {
 public:
     Handler();
+    virtual ~Handler();
     void CallMe();
     void HangUp();
     
@@ -37,12 +55,18 @@ public:
     Message* ObtainEmptyMessage();
     void SetIndentifier(int iden);
     
+    void AddActionListener(ActionListener* al) {
+        _listener = al;
+    }
+    
 protected:
     virtual bool HandleMessage(Message& m);
     
 private:
     friend class Message;
     bool SendMessage(Message& m);
+    
+    ActionListener* _listener;
     
     Looper* _ownner;
     int _sourceIndentifier;

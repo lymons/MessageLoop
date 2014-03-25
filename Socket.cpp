@@ -144,9 +144,8 @@ int Socket::WaitClient()
     return 0;
 }
 
-int Socket::NotifyServer(int sock)
+int Socket::NotifyOpposite(int sock)
 {
-    // 把这个fd发送给客户端
     char idbuf[10] = { 0 };
     sprintf(idbuf, "%d", sock);
     return (int)send(sock, idbuf, strlen(idbuf), 0);
@@ -159,7 +158,7 @@ void Socket::CloseConnect(int sock)
 
 int Socket::ReadClient(int index)
 {
-    char buf[BUF_SIZE];
+    char buf[BUF_SIZE] = {0};
     
     //接收数据
     ssize_t len = recv(_socks[index], buf, sizeof(buf), 0);
@@ -206,9 +205,7 @@ int Socket::AcceptClient()
         printf("new connection client[%d] %s:%d\n", _conn_amount, inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
         
         // 把这个fd发送给客户端
-        char idbuf[10] = { 0 };
-        sprintf(idbuf, "%d", new_fd);
-        send(new_fd, idbuf, strlen(idbuf), 0);
+        NotifyOpposite(new_fd);
     }
     else {
         printf("max connections arrive, exit\n");

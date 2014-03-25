@@ -33,7 +33,7 @@ public:
     int StartServer();
     int StartClientConnect(int& server_sock);
     int WaitClient();
-    int NotifyServer(int sock);
+    int NotifyOpposite(int sock);
     void CloseConnect(int sock);
     
 private:

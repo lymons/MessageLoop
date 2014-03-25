@@ -53,7 +53,7 @@ void SocketNotifier::DestoryClient(int id)
 
 bool SocketNotifier::SendMessage(int id, void *m)
 {
-    return _socket->NotifyServer(id);
+    return _socket->NotifyOpposite(id);
 }
 
 void* SocketNotifier::RecvMessage(int id)

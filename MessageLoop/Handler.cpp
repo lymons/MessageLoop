@@ -30,6 +30,14 @@ Handler::Handler()
 //    }
     
     _sourceIndentifier = -1;
+    _listener = NULL;
+}
+
+Handler::~Handler()
+{
+    if (_listener) {
+        delete _listener;
+    }
 }
 
 void Handler::CallMe()
@@ -52,6 +60,10 @@ bool Handler::HandleMessage(Message& m)
     
     if (m.IsObtainExpired()) {
         return false;
+    }
+    
+    if (_listener) {
+        _listener->fire(m);
     }
     
     return true;

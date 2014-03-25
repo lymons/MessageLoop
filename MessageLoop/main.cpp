@@ -30,7 +30,8 @@ protected:
     }
 };
 
-MyHandler *h1;
+MyHandler   *h1;
+Handler     *h2;
 
 void* testThread1(void* ptr)
 {
@@ -54,6 +55,21 @@ void* testThread1(void* ptr)
 
 void* testThread2(void* ptr)
 {
+    Handler* h = (Handler*)ptr;
+    h->CallMe();
+    for (int i = 0; i < 1000; ++ i) {
+        Message* msg = h->ObtainEmptyMessage();
+        msg->what = 0x101;
+        msg->message = "hello ";
+        char buf[10] = {0};
+        sprintf(buf, "%i", i);
+        msg->message.append(buf);
+        
+        msg->SendMessage();
+        
+        sleep(1);
+    }
+    h->HangUp();
     return NULL;
 }
 
@@ -63,9 +79,18 @@ void testMQ()
     Looper::Prepare();
     
     h1 = new MyHandler();
+    h2 = new Handler();
+    h2->AddActionListener(new ActionListener(
+     [tid2](Message& m)
+     {
+         printf("pid: %ld, type: %d, message: %s\n", (long)tid2, m.what, m.message.c_str());
+         
+         sleep(2);
+     }
+     ));
     
     pthread_create(&tid1, NULL, testThread1, h1);
-    pthread_create(&tid2, NULL, testThread2, NULL);
+    pthread_create(&tid2, NULL, testThread2, h2);
     
     Looper::Run();
     
