@@ -51,13 +51,7 @@ void Handler::HangUp()
 }
 
 bool Handler::HandleMessage(Message& m)
-{  
-    if ((m.mStatus & OWNNER_HANDLER) == 1) {
-        MLock l(hMutex);
-        _emptyMessages.push(&m);
-        _occupyMessages.remove(&m);
-    }
-    
+{
     if (m.IsObtainExpired()) {
         return false;
     }
@@ -108,20 +102,36 @@ Message* Handler::ObtainEmptyMessage()
     return message;
 }
 
-bool Handler::SendMessage(Message& m)
+/*
+ * 必须在其他线程中调用该函数
+ */
+bool Handler::SendMessage(Message& m, bool bPending)
 {
-    // 必须在其他线程中调用该函数
-    m.mTarget = this;
+    Message* msg = &m;
+    if ((m.mStatus & OWNNER_HANDLER) != 1) {
+        msg = new Message(&m);
+    }
+    
+    msg->mTarget = this;
+    msg->mSendTime = time(NULL);
 
-    {
+    if (bPending) {
         MLock l(hMutex);
-        _pendingMessages.push(&m);
+        _pendingMessages.push(msg);
+    } else {
+        _ownner->mQueue->Push(msg);
     }
     
     return SocketNotifier::Instance().SendMessage(_sourceIndentifier, NULL);
 }
 
-void Handler::SetIndentifier(int iden)
+void Handler::RecycleMessage(Message* m)
 {
-    _sourceIndentifier = iden;
+    if ((m->mStatus & OWNNER_HANDLER) == 1) {
+        MLock l(hMutex);
+        _emptyMessages.push(m);
+        _occupyMessages.remove(m);
+    } else {
+        delete m;
+    }
 }

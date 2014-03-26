@@ -47,6 +47,7 @@ void Looper::Run()
         Message *message = queue->Next();
         if (message) {
             message->Handle();
+            message->Recycle();
         }
     }
     

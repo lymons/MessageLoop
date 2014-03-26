@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include <queue>
+//#include <map>
+//#include <time.h>
 
 using namespace std;
 
@@ -30,7 +32,7 @@ private:
     
 private:
     queue<Message*> mMessageQueue;
-    
+    //multimap<time_t, Message*, less<time_t>> mMessageSet;
 };
 
 #endif /* defined(__MessageLoop__Queue__) */

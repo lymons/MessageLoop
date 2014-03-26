@@ -53,7 +53,6 @@ public:
     
     void QueuePendingMessage();
     Message* ObtainEmptyMessage();
-    void SetIndentifier(int iden);
     
     void AddActionListener(ActionListener* al) {
         _listener = al;
@@ -64,7 +63,8 @@ protected:
     
 private:
     friend class Message;
-    bool SendMessage(Message& m);
+    bool SendMessage(Message& m, bool bPending=true);
+    void RecycleMessage(Message* m);
     
     ActionListener* _listener;
     
