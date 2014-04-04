@@ -16,6 +16,9 @@
 MMutex hMutex;
 
 #include <assert.h>
+#include <thread>
+
+#define PENDING_LEN     128
 
 Handler::Handler()
 {
@@ -102,6 +105,16 @@ Message* Handler::ObtainEmptyMessage()
     return message;
 }
 
+void Handler::PendingMessage(Message& m)
+{
+    MLock l(hMutex);
+    SET_PRIORI(m.mStatus, PRIORITY_NORMAL);
+    if (_pendingMessages.size() > PENDING_LEN) {
+        _pendingMessages.pop();
+    }
+    _pendingMessages.push(&m);
+}
+
 /*
  * 必须在其他线程中调用该函数
  */
@@ -114,12 +127,16 @@ bool Handler::SendMessage(Message& m, bool bPending)
     
     msg->mTarget = this;
     msg->mSendTime = time(NULL);
+    msg->mThreadID = this_thread::get_id();
 
     if (bPending) {
-        MLock l(hMutex);
-        _pendingMessages.push(msg);
+        PendingMessage(*msg);
     } else {
-        _ownner->mQueue->Push(msg);
+        SET_PRIORI(msg->mStatus, PRIORITY_HIGHT);
+        if (!_ownner->mQueue->Push(msg)) {
+            SET_PRIORI(msg->mStatus, PRIORITY_NORMAL);
+            PendingMessage(*msg);
+        }
     }
     
     return SocketNotifier::Instance().SendMessage(_sourceIndentifier, NULL);

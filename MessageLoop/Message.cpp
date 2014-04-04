@@ -11,11 +11,15 @@
 
 Message::Message()
 {
+    what = 0;
+    parcel = NULL;
     SET_OWNNER(mStatus, OWNNER_USER);
 }
 
 Message::Message(string& mstr)
 {
+    what = 0;
+    parcel = NULL;
     message = mstr;
     SET_OWNNER(mStatus, OWNNER_USER);
 }
@@ -50,14 +54,14 @@ void Message::Empty()
     
 }
 
-int Message::SendMessage()
+int Message::SendMessage(bool bPending)
 {
-    return mTarget->SendMessage(*this);
+    return mTarget->SendMessage(*this, bPending);
 }
 
-int Message::SendMessage(Handler* target)
+int Message::SendMessage(Handler* target, bool bPending)
 {
-    return target->SendMessage(*this);
+    return target->SendMessage(*this, bPending);
 }
 
 bool Message::IsObtainExpired()

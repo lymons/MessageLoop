@@ -15,10 +15,11 @@
 
 #define OWNNER_HANDLER  0x0100
 #define OWNNER_USER     0x1000
-#define STATUS_EMPTY    0x0001
-#define STATUS_OCCUPY   0x0010
+#define PRIORITY_HIGHT  0x0001
+#define PRIORITY_NORMAL 0x0010
 
-#define SET_OWNNER(st, ow)  (((st)&0x0011)|(ow))
+#define SET_OWNNER(st, ow)  ((st)=((st)&0x0011)|(ow))
+#define SET_PRIORI(st, pr)  ((st)=((st)&0x1100)|(pr))
 #define OBTAIN_TIME_LIMIT   60*60                   // one hour
 
 using namespace std;
@@ -65,6 +66,7 @@ private:
     friend class Message;
     bool SendMessage(Message& m, bool bPending=true);
     void RecycleMessage(Message* m);
+    void PendingMessage(Message& m);
     
     ActionListener* _listener;
     

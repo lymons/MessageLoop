@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
 
 using namespace std;
 
@@ -41,8 +42,11 @@ public:
     
     void Recycle();
     void Empty();
-    int  SendMessage();
-    int  SendMessage(Handler* target);
+    int  SendMessage(bool bPending = true);
+    int  SendMessage(Handler* target, bool bPending = true);
+    time_t GetSendTime() {
+        return mSendTime;
+    }
     bool IsObtainExpired();
     
 public:
@@ -58,6 +62,7 @@ private:
     void Handle();
     
     int mStatus;
+    thread::id mThreadID;
     time_t mObtainTime;
     time_t mSendTime;
     Handler* mTarget;

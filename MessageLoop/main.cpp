@@ -14,6 +14,19 @@
 #include "Handler.h"
 #include "Message.h"
 
+#define MSG_PRT(pid, t, what, msg) printf("pid: %llu, time: %s, type: %d, message: %s\n", pid, t, what, msg);
+
+Handler   *h1, *h2;
+pthread_t tid1, tid2;
+__uint64_t pid1, pid2;
+
+void getHumanTime(time_t t, char *str_time, int len)
+{
+    struct tm *local_time = NULL;
+    local_time = localtime(&t);
+    strftime(str_time, len, "%m/%d,%H:%M:%S", local_time);
+}
+
 class MyHandler : public Handler
 {
 protected:
@@ -22,7 +35,9 @@ protected:
             return false;
         }
         
-        printf("type: %d, message: %s\n", m.what, m.message.c_str());
+        char timebuf[64] = {0};
+        getHumanTime(m.GetSendTime(), timebuf, sizeof(timebuf));
+        MSG_PRT(pid1, timebuf, m.what, m.message.c_str());
         
         sleep(5);
         
@@ -30,11 +45,10 @@ protected:
     }
 };
 
-MyHandler   *h1;
-Handler     *h2;
-
 void* testThread1(void* ptr)
 {
+    pthread_threadid_np(pthread_self(), &pid1);
+    
     Handler* h = (Handler*)ptr;
     h->CallMe();
     for (int i = 0; i < 1000; ++ i) {
@@ -45,9 +59,9 @@ void* testThread1(void* ptr)
         sprintf(buf, "%i", i);
         msg->message.append(buf);
         
-        msg->SendMessage();
+        msg->SendMessage(false);
         
-        sleep(2);
+        sleep(1);
     }
     h->HangUp();
     return NULL;
@@ -55,11 +69,13 @@ void* testThread1(void* ptr)
 
 void* testThread2(void* ptr)
 {
+    pthread_threadid_np(pthread_self(), &pid2);
+    
     Handler* h = (Handler*)ptr;
     h->CallMe();
     for (int i = 0; i < 1000; ++ i) {
         Message* msg = h->ObtainEmptyMessage();
-        msg->what = 0x101;
+        msg->what = 0x201;
         msg->message = "hello ";
         char buf[10] = {0};
         sprintf(buf, "%i", i);
@@ -75,15 +91,17 @@ void* testThread2(void* ptr)
 
 void testMQ()
 {
-    pthread_t tid1, tid2;
+    __uint64_t* pid = &pid2;
     Looper::Prepare();
     
     h1 = new MyHandler();
     h2 = new Handler();
     h2->AddActionListener(new ActionListener(
-     [tid2](Message& m)
+     [pid](Message& m)
      {
-         printf("pid: %ld, type: %d, message: %s\n", (long)tid2, m.what, m.message.c_str());
+         char timebuf[64] = {0};
+         getHumanTime(m.GetSendTime(), timebuf, sizeof(timebuf));
+         MSG_PRT(*pid, timebuf, m.what, m.message.c_str());
          
          sleep(2);
      }
